@@ -6,13 +6,14 @@ This project serves as an extensible framework for processing and cleaning histo
 
 The most direct usage is through the `load_fx_data.py` script. There are several command line options:
 
-`python load_fx_data.py --pair=EURUSD --start_date=2019-01-01 --end_date=2019-02-01 --opath=/data/EURUSD/raw --processes=4`
+`python load_fx_data.py --pair=EURUSD --start_date=2019-01-01 --end_date=2019-02-01 --opath=/data/EURUSD/raw --processes=4 --pipeline=tabular`
 
 - `pair`: Currency pair for historical data.
 - `start_date`: Starting point for data processing.
-- `end_date`: Ending point for data processing not inclusive of the final date.
+- `end_date`: (Optional) Ending point for data processing not inclusive of the final date. Default behavior sets end date to current date.
 - `opath`: Output directory to write batches of files.
-- `processes`: Number of processes to run. If too many are run, then the user will start to receive 503 responses from the server. 4-8 processes are normally ideal.
+- `processes`: (Optional) Number of processes to run. If too many are run, then the user will start to receive 503 responses from the server. 4-8 processes are normally ideal.
+- `pipeline`: (Optional) Specify any custom pipelines added to the `pipelines/` directory. Default option is `tabular`. 
 
 # Layout
 
