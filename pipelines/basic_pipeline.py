@@ -75,7 +75,7 @@ class FXTickDataTabularPipeline(FXTickDataBasicPipeline):
 
         return True
 
-class FXTickDataSQLiterPipeline(FXTickDataBasicPipeline):
+class FXTickDataSQLitePipeline(FXTickDataBasicPipeline):
     '''
     Run data pipeline with a SQLite processor.
     '''

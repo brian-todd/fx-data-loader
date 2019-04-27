@@ -11,7 +11,12 @@ from dateutil import parser, utils
 
 from utils import tools
 from utils.logger import logger
-from pipelines.basic_pipeline import FXTickDataTabularPipeline, FXTickDataSQLiterPipeline
+from pipelines.basic_pipeline import *
+
+PIPELINES_MAP: dict = {
+    'tabular'   : FXTickDataTabularPipeline,
+    'sqlite'    : FXTickDataSQLitePipeline
+}
 
 MAX_POLL_TIME: int = 3
 MAX_TIMEOUT_TIME: int = 3
@@ -29,11 +34,16 @@ def main():
     arg_parser.add_argument('--end_date', help='Ending time for data pull', type=str)
     arg_parser.add_argument('--opath', help='Path to dir for ouput writes.', type=str)
     arg_parser.add_argument('--processes', help='Number of processes for data collection', type=int)
+    arg_parser.add_argument('--pipeline', help='Specify which pipeline to use.', type=str, default='tabular')
     args = arg_parser.parse_args()
 
     # Check that output directory exists.
     if not os.path.exists(args.opath):
         raise Exception(f'User specified opath does not exist: {args.opath}')
+
+    # Validate that our pipeline exists.
+    if args.pipeline not in PIPELINES_MAP.keys():
+        raise Exception(f'Non-existant pipeline specified: {args.pipeline}')
 
     # Attempt to convert strings to datetime objects.
     start_date, end_date = tools.parse_arg_dates(args.start_date, args.end_date)
@@ -47,7 +57,7 @@ def main():
     pprocs: list = []
     with multiprocessing.Pool(processes=args.processes) as pool:
         for query_date in tools.valid_date_range(start_date, end_date):
-            pipeline = FXTickDataTabularPipeline(args.pair, query_date)
+            pipeline = PIPELINES_MAP[args.pipeline](args.pair, query_date)
             pprocs.append((pool.apply_async(pipeline, args=(args.opath, ))))
 
         while not all([proc.ready() for proc in pprocs]):
