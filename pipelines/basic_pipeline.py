@@ -15,7 +15,7 @@ from datetime import datetime
 from utils.logger import logger
 from network.requester import FXTickDataRequester
 from network.parser import FXTickDataParser
-from proceesors.ticks import FXTickDataProcessorSQLite, FXTickDataProcessorTabular
+from processors.ticks import FXTickDataProcessorSQLite, FXTickDataProcessorTabular
 
 LOG = logger()
 

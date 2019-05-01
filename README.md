@@ -19,7 +19,7 @@ The most direct usage is through the `load_fx_data.py` script. There are several
 
 - `network`: Request handling and parsing.
 - `pipelines`: Fully connected data processing pipelines.
-- `proceesors`: Data processing and cleaning.
+- `processors`: Data processing and cleaning.
 - `tests`: Unit tests.
 - `utils`: Utility and tooling functions.
 
