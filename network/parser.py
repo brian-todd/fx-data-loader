@@ -53,7 +53,7 @@ class FXTickDataParser(object):
                 break
 
             if not decomp.eof:
-                raise LZMAError(f'Compressed data ended before the end-of-stream marker was reached - {self.DUKAS_BASE_URL}')
+                raise LZMAError(f'Compressed data ended before the end-of-stream marker was reached')
 
         return b"".join(results)
 
@@ -67,11 +67,8 @@ class FXTickDataParser(object):
         :returns daily_tick_data: List of individual ticks in the market.
         '''
 
-        try:
-            data: bytes = self._decompress_lzma(resp)
-
-        except Exception as e:
-            raise Exception(str(e) + ' - ' + self.DUKAS_BASE_URL)
+        # Decompress byte stream prior to parsing data.
+        data: bytes = self._decompress_lzma(resp)
 
         daily_tick_data: list = []
         for chunk_idx in range(0, len(data), self.row_size):
