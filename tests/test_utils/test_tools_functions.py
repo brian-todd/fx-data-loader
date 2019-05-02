@@ -74,10 +74,19 @@ class TestUtilityToolsFunctions(unittest.TestCase):
         # 0th hour and iterate upward.
         self.assertEqual(counter, 23)
 
-    def test_currency_parser(self):
+    def test_currency_parser_output(self):
         '''
         Validate the function correctly parses currency pairs.
         '''
 
         parsed: str = tools.parse_currency_pairs(self.currency)
         self.assertEqual('EUR/USD', parsed)
+
+    def test_currency_parser_exception_handling(self):
+        '''
+        Validate that the function is able to correctly handle exceptions.
+        '''
+
+        with self.assertRaises(Exception):
+            tools.parse_currency_pairs(1234)
+            tools.parse_currency_pairs('EURUSDJPY')
