@@ -1,7 +1,8 @@
 import unittest
 
-from datetime import datetime, timedelta
+from datetime import timedelta
 from dateutil import parser
+
 from network.requester import FXTickDataRequester
 
 class TestNetworkRequester(unittest.TestCase):

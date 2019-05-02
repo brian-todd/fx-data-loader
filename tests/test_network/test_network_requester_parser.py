@@ -1,11 +1,11 @@
 import unittest
 
-from lzma import LZMAError
-
 import numpy as np
 import pandas as pd
 
 from dateutil import parser
+from lzma import LZMAError
+
 from network.parser import FXTickDataParser
 from network.requester import FXTickDataRequester
 
