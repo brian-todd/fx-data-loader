@@ -24,10 +24,3 @@ The most direct usage is through the `load_fx_data.py` script. There are several
 - `utils`: Utility and tooling functions.
 
 Modifying data pipelines is generally as simple as adding a new class that inherits from the relevant base class.
-
-# To-Do
-
-- Improve testing suite.
-- Implement options for different pipelines.
-- Implement resampling tools for lower resolution views.
-- Devlelop custom exceptions and improve exception handling.
