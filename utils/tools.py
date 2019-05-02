@@ -2,13 +2,13 @@
 Basic toolbox of helper functions.
 '''
 
-from typing import Generator, Union
+from typing import Generator, Optional
 
 from datetime import datetime
 from dateutil import parser, utils
 from dateutil.rrule import HOURLY, rrule, MO, TU, WE, TH, FR, SU
 
-def parse_arg_dates(start_date: str, end_date: Union[str, None]) -> tuple:
+def parse_arg_dates(start_date: str, end_date: Optional[str] = None) -> tuple:
     '''
     Parse strings and return a tuple of start and end dates.
 
