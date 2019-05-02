@@ -25,8 +25,8 @@ class TestTickDataBaseUtils():
         self.data_parser = FXTickDataParser()
 
         # Path to testing data.
-        self.data_path: str = 'tests/data/'
-        self.data_output_path: str = 'tests/data/outs/'
+        self.data_path: str = 'data/'
+        self.data_output_path: str = 'data/outs/'
 
     def _load_data(self, request_date: datetime) -> pd.DataFrame:
         '''
