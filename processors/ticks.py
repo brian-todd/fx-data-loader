@@ -29,6 +29,7 @@ class FXTickDataProcessor():
             'GBPUSD'    : 1e5,
             'EURUSD'    : 1e5
         }
+        self.VOLUME_FACTOR: int = 1000000
 
     def process(self, daily_tick_data: list) -> pd.DataFrame:
         '''
@@ -47,9 +48,13 @@ class FXTickDataProcessor():
         data['ts'] = data['ts'] + pd.to_timedelta(data['ms'], unit='ms')
         data.drop('ms', axis=1, inplace=True)
 
-        # Process pip level data.
+        # Process ask and bid prices per tick.
         data['ask'] = data['ask'] / self.CURRENCY_FACTOR_MAP[self.currency]
         data['bid'] = data['bid'] / self.CURRENCY_FACTOR_MAP[self.currency]
+
+        # Process ask and bid volume per tick.
+        data['ask_volume'] = round(data['ask_volume'] * self.VOLUME_FACTOR)
+        data['bid_volume'] = round(data['bid_volume'] * self.VOLUME_FACTOR)
 
         # Reorder columns.
         return data[['ts', 'ask', 'bid', 'ask_volume', 'bid_volume']]
