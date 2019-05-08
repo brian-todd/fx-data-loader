@@ -83,6 +83,19 @@ class FXTickDataProcessorSQLite(FXTickDataProcessor):
     NOTE: This presupposes the existing of local SQLite DB.
     '''
 
+    def _add_currency_pair_column(self, data: pd.DataFrame) -> pd.DataFrame:
+        '''
+        Add currency pair name to the DataFrame to ensure DB compatibility.
+
+        :params data: DataFrame containing processed tick data.
+        :returns outs: DataFrame with an additional column indiciating the pair.
+        '''
+
+        data['pair'] = self.currency
+        data: pd.DataFrame = data[['ts', 'pair', 'ask', 'bid', 'ask_volume', 'bid_volume']]
+
+        return data
+
     def write(self, data: pd.DataFrame, db: str, table: str) -> None:
         '''
         Write data into specified DB and table.
@@ -91,6 +104,8 @@ class FXTickDataProcessorSQLite(FXTickDataProcessor):
         :params db: Local DB name.
         :params table: Table where data will be stored.
         '''
+
+        full_data: pd.DataFrame = self._add_currency_pair_column(data)
 
         # Attempt DB connection. If there are no errors that must be handled,
         # then append data to existing table.
@@ -102,10 +117,11 @@ class FXTickDataProcessorSQLite(FXTickDataProcessor):
             raise e
 
         else:
-            data.to_sql(table, conn, if_exists='append')
+            full_data.to_sql(table, conn, if_exists='append', index=False, index_label='')
 
         finally:
             # Check if connection is still open. If so, then close it before
             # releasing our object.
             if conn:
+                conn.commit()
                 conn.close()
