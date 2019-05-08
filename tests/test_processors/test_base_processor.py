@@ -28,6 +28,9 @@ class TestTickDataBaseUtils():
         self.data_path: str = 'tests/data/'
         self.data_output_path: str = 'tests/data/outs/'
 
+        # Set path to test DB.
+        self.path_to_test_db: str = 'tests/data/test.db'
+
     def _load_data(self, request_date: datetime) -> pd.DataFrame:
         '''
         Load data are parse timestamp columns.

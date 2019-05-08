@@ -28,12 +28,23 @@ class FXTickDataBasicPipeline():
         self.currency: str = currency
         self.request_date: datetime = request_date
 
+    def _get_params(self, params: dict, keys: list) -> tuple:
+        '''
+        Search the dictionary of parameters to find the specified keys, and
+        return to the main call in the order they were requested.
+
+        :params params: Parameter dictionary containing pipeline args.
+        :params keys: List of keys to retrieve from parameter dict.
+        '''
+
+        return (params[key] for key in keys)
+
 class FXTickDataTabularPipeline(FXTickDataBasicPipeline):
     '''
     Run data pipeline with a tabular processor.
     '''
 
-    def __call__(self, opath: str, sep: Optional[str] = '\t') -> bool:
+    def __call__(self, params: dict) -> bool:
         '''
         Full data processing pipeline. Emit a flag if the pipeline succeeded.
 
@@ -41,6 +52,8 @@ class FXTickDataTabularPipeline(FXTickDataBasicPipeline):
         :params sep: Optionally specify how the data is delimited.
         :returns flag: Boolean flag indicating success of failure.
         '''
+
+        opath, sep = self._get_params(params, ['opath', 'sep'])
 
         try:
             LOG.info(f'Sending API requests for date {str(self.request_date)} to {opath}')
@@ -80,7 +93,7 @@ class FXTickDataSQLitePipeline(FXTickDataBasicPipeline):
     Run data pipeline with a SQLite processor.
     '''
 
-    def __call__(self, db: str, table: str) -> bool:
+    def __call__(self, params: dict) -> bool:
         '''
         Full data processing pipeline. Emit a flag if the pipeline succeeded.
 
@@ -88,6 +101,8 @@ class FXTickDataSQLitePipeline(FXTickDataBasicPipeline):
         :params table: Table where data will be stored.
         :returns flag: Boolean flag indicating success of failure.
         '''
+
+        db, table = self._get_params(params, ['db', 'table'])
 
         try:
             LOG.info(f'Sending API requests for date {str(self.request_date)} to {db}.{table}')
@@ -100,7 +115,7 @@ class FXTickDataSQLitePipeline(FXTickDataBasicPipeline):
             return False
 
         try:
-            LOG.info(f'Parsing API response for date {str(self.request_date)} to {db}.{table}')
+            LOG.info(f'Parsing API response for date {str(self.request_date)} to {db}/{table}')
             tick_data_parser = FXTickDataParser()
             parsed_ticks = tick_data_parser.parse(raw_ticks)
 
