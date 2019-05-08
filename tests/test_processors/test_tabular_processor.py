@@ -5,14 +5,13 @@ import unittest
 import numpy as np
 import pandas as pd
 
-from dateutil import parser
-from datetime import datetime, timedelta
+from datetime import timedelta
 
 from pandas.util.testing import assert_frame_equal
 
 from network.parser import FXTickDataParser
 from network.requester import FXTickDataRequester
-from processors.ticks import FXTickDataProcessorTabular, FXTickDataProcessorSQLite
+from processors.ticks import FXTickDataProcessorTabular
 from tests.test_processors.test_base_processor import TestTickDataBaseUtils
 
 class TestTickDataTabularProcessor(TestTickDataBaseUtils, unittest.TestCase):
